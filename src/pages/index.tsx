@@ -9,9 +9,7 @@ export default function Home() {
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [extraInfo, setExtraInfo] = useState<string>("");
-  const [recipients, setRecipients] = useState<string>(
-    "dylandabrowski@gmail.com"
-  );
+  const [recipients, setRecipients] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emailSent, setEmailSent] = useState<boolean>(false);
