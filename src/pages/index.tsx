@@ -74,9 +74,9 @@ export default function Home() {
               So, you've planned a work party, and now you need to invite all
               your coworkers? Don't waste time writing that email. Let RSVPify
               do all the work for you! Simply enter the information in the
-              prompts, and get an AI-generated email to send to all your
-              coworkers, friends, family, or anyone else who may be waiting for
-              your invitation.
+              prompts, and get an AI-generated email to be sent instantly to all
+              your coworkers, friends, family, or anyone else who may be waiting
+              for your invitation.
             </p>
           </div>
           {output ? (

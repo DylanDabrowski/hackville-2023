@@ -8,7 +8,7 @@ async function makeEmail(prompt: string) {
   const resp = await cohere.generate({
     prompt: prompt,
     model: "command-xlarge-nightly",
-    max_tokens: 500,
+    max_tokens: 750,
   });
   return resp;
 }

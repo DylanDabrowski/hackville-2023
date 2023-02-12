@@ -12,7 +12,7 @@ export default function TextField(props: Props) {
     <div className="text-left w-full">
       <p className="text-gray-700 text-sm mt-2">{props.label}</p>
       <input
-        className="rounded-lg border p-3 w-full"
+        className="rounded-lg border p-2 w-full"
         type="text"
         placeholder={props.placeholder}
         value={props.value}
