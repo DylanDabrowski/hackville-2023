@@ -66,11 +66,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main className="h-screen w-screen text-center bg-blue-300">
+      <main className="h-screen w-screen text-center bg-blue-200">
         <div className="p-5 flex flex-col items-center">
           <div className="flex flex-col items-center">
             <h1 className="text-8xl text-gray-700 pt-5">RSVPify!</h1>
-            <p className="text-lg text-white mt-2 w-full text-left">
+            <p className="text-lg text-white mt-2 w-full max-w-2xl text-left">
               So, you've planned a work party, and now you need to invite all
               your coworkers? Don't waste time writing that email. Let RSVPify
               do all the work for you! Simply enter the information in the
@@ -80,7 +80,7 @@ export default function Home() {
             </p>
           </div>
           {output ? (
-            <div className="mt-5 w-full">
+            <div className="mt-5 w-full max-w-2xl">
               <h1 className="text-gray-700 text-left">
                 Preview of your email:
               </h1>
@@ -120,7 +120,7 @@ export default function Home() {
               )}
             </div>
           ) : (
-            <div className="mt-5 w-full">
+            <div className="mt-5 w-full max-w-2xl">
               <TextField
                 label="Subject"
                 placeholder="Subject for your email"
