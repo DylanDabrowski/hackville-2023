@@ -1,18 +1,20 @@
 import Spinner from "@/components/Spinner";
+import TextField from "@/components/TextField";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [subject, setSubject] = useState<string>("Skydiving Trip");
-  const [opening, setOpening] = useState<string>("Hey Team!");
-  const [time, setTime] = useState<string>("Monday 5:00PM to 8:00PM");
-  const [location, setLocation] = useState<string>("180 Apple st, Toronto");
+  const [subject, setSubject] = useState<string>("");
+  const [opening, setOpening] = useState<string>("");
+  const [time, setTime] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   const [extraInfo, setExtraInfo] = useState<string>("");
   const [recipients, setRecipients] = useState<string>(
     "dylandabrowski@gmail.com"
   );
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emailSent, setEmailSent] = useState<boolean>(false);
   const [output, setOutput] = useState<string>("");
 
   const makePrompt = () => {
@@ -37,6 +39,7 @@ export default function Home() {
   };
 
   const sendEmail = async () => {
+    setIsLoading(true);
     const resp = fetch(`/api/send_email`, {
       method: "POST",
       headers: {
@@ -48,6 +51,8 @@ export default function Home() {
         text: output,
       }),
     });
+    setIsLoading(false);
+    setEmailSent(true);
     return await resp;
   };
 
@@ -63,11 +68,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main className="h-screen w-screen">
-        <div className="flex flex-col m-5">
-          <div>
-            <h1 className="text-8xl text-gray-800">RSVPify!</h1>
-            <p className="text-sm text-gray-500 mt-2">
+      <main className="h-screen w-screen text-center bg-blue-300">
+        <div className="p-5 flex flex-col items-center">
+          <div className="flex flex-col items-center">
+            <h1 className="text-8xl text-gray-700 pt-5">RSVPify!</h1>
+            <p className="text-lg text-white mt-2 w-full text-left">
               So, you've planned a work party, and now you need to invite all
               your coworkers? Don't waste time writing that email. Let RSVPify
               do all the work for you! Simply enter the information in the
@@ -77,8 +82,10 @@ export default function Home() {
             </p>
           </div>
           {output ? (
-            <div className="mt-10">
-              <h2 className="text-gray-500 ml-5">Preview of your email:</h2>
+            <div className="mt-5 w-full">
+              <h1 className="text-gray-700 text-left">
+                Preview of your email:
+              </h1>
               <textarea
                 className="w-full h-80 border rounded-lg p-5"
                 value={output}
@@ -86,81 +93,73 @@ export default function Home() {
                   setOutput(e.target.value);
                 }}
               />
-              <input
-                className="rounded-lg border p-3 w-full mt-3"
-                type="text"
-                placeholder="Who is it being sent TO?"
+              <TextField
+                label="Recipients"
+                placeholder="Recipient emails (seperated by a space)"
                 value={recipients}
-                onChange={(e) => {
-                  setRecipients(e.target.value);
-                }}
-              />
-              <button
-                className="mt-8 ml-4 bg-green-500 w-32 p-3 rounded-xl"
-                onClick={() => {
-                  sendEmail();
-                }}
-              >
-                Send Email!
-              </button>
-            </div>
-          ) : (
-            <div className="max-w-xl mt-10">
-              <p className="text-gray-300 text-sm mt-2">Subject</p>
-              <input
-                className="rounded-lg border p-3 w-full"
-                type="text"
-                placeholder="Subject for your email"
-                value={subject}
-                onChange={(e) => {
-                  setSubject(e.target.value);
-                }}
-              />
-              <p className="text-gray-300 text-sm mt-2">Greeting</p>
-              <input
-                className="rounded-lg border p-3 w-full"
-                type="text"
-                placeholder="How should it open? (ex. 'Hey Team!', 'Hello Everyone!')"
-                value={opening}
-                onChange={(e) => {
-                  setOpening(e.target.value);
-                }}
-              />
-              <p className="text-gray-300 text-sm mt-2">Times</p>
-              <input
-                className="rounded-lg border p-3 w-full"
-                type="text"
-                placeholder="What Time(s) / Date(s) is the event?"
-                value={time}
-                onChange={(e) => {
-                  setTime(e.target.value);
-                }}
-              />
-              <p className="text-gray-300 text-sm mt-2">Location</p>
-              <input
-                className="rounded-lg border p-3 w-full"
-                type="text"
-                placeholder="Where is the event being held?"
-                value={location}
-                onChange={(e) => {
-                  setLocation(e.target.value);
-                }}
-              />
-              <p className="text-gray-300 text-sm mt-2">Other info</p>
-              <input
-                className="rounded-lg border p-3 w-full"
-                type="text"
-                placeholder="Any other information you want to include"
-                value={extraInfo}
-                onChange={(e) => {
-                  setExtraInfo(e.target.value);
-                }}
+                setValue={setRecipients}
               />
               {isLoading ? (
-                <Spinner />
+                <div className="flex flex-col items-center mt-8 p-3 text-center">
+                  <Spinner />
+                </div>
               ) : (
                 <button
-                  className="mt-8 ml-4 bg-green-500 w-32 p-3 rounded-xl"
+                  className="mt-8 bg-green-100 w-32 p-3 rounded-xl"
+                  onClick={() => {
+                    sendEmail();
+                  }}
+                >
+                  Send Email
+                </button>
+              )}
+              {emailSent ? (
+                <p className="mt-2 text-green-100 text-lg">
+                  Email sent! all recipients should recieve an email shortly
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
+          ) : (
+            <div className="mt-5 w-full">
+              <TextField
+                label="Subject"
+                placeholder="Subject for your email"
+                value={subject}
+                setValue={setSubject}
+              />
+              <TextField
+                label="Greeting"
+                placeholder="How should it open? (ex. 'Hey Team!', 'Hello Everyone!')"
+                value={opening}
+                setValue={setOpening}
+              />
+              <TextField
+                label="Time & Date"
+                placeholder="What Time(s) / Date(s) is the event?"
+                value={time}
+                setValue={setTime}
+              />
+              <TextField
+                label="Location"
+                placeholder="Where is the event being held?"
+                value={location}
+                setValue={setLocation}
+              />
+              <TextField
+                label="Extra Info"
+                placeholder="Any other information you want to include"
+                value={extraInfo}
+                setValue={setExtraInfo}
+              />
+              {isLoading ? (
+                <div className="flex flex-col items-center mt-8 p-3 text-center">
+                  <Spinner />
+                </div>
+              ) : (
+                <button
+                  className="mt-8 bg-green-100 w-32 p-3 rounded-xl"
                   onClick={() => {
                     makeEmail();
                   }}
